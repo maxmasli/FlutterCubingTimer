@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubing_timer/assets/strings.dart';
 import 'package:flutter_cubing_timer/assets/styles.dart';
 import 'package:flutter_cubing_timer/cubing/avg.dart';
+import 'package:flutter_cubing_timer/cubing/event.dart';
 import 'package:flutter_cubing_timer/utils.dart';
 import 'package:flutter_cubing_timer/cubing/result.dart';
-import 'package:flutter_cubing_timer/widgets/penalty_button.dart';
+import 'package:flutter_cubing_timer/widgets/select_event_card.dart';
+import 'package:flutter_cubing_timer/widgets/timer_button.dart';
 
 class TimerScreen extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => _TimerScreen(getCB());
 }
 
 class _TimerScreen extends State {
-  _TimerScreen (_cubingManager) {
+  _TimerScreen(_cubingManager) {
     this._cubingManager = _cubingManager;
   }
+
   var _isStarted = false;
   var _currentTimerValue = standartResultText;
   var _colorTextTimer = Colors.black;
@@ -62,13 +64,12 @@ class _TimerScreen extends State {
     //TODO переводить в минуты секунды
     var avg = _cubingManager.getAvg(Avg.avg5);
     _avg5Value = avg != -1 ? avg : DNFText;
-    avg =  _cubingManager.getAvg(Avg.avg12);
+    avg = _cubingManager.getAvg(Avg.avg12);
     _avg12Value = avg != -1 ? avg : DNFText;
     avg = _cubingManager.getAvg(Avg.avg50);
     _avg50Value = avg != -1 ? avg : DNFText;
     avg = _cubingManager.getAvg(Avg.avg100);
     _avg100Value = avg != -1 ? avg : DNFText;
-
   }
 
   void onTapDown(details) {
@@ -140,26 +141,28 @@ class _TimerScreen extends State {
                   function: () {
                     if (_isDNFButtonEnabled) {
                       setState(() {
-                        _cubingManager.getLast().setDNF(!(_cubingManager
+                        _cubingManager
                             .getLast()
-                            .isDNF())); //TODO сделать днфы всякие и штрафы типа +2
+                            .setDNF(!(_cubingManager.getLast().isDNF()));
                       });
                     }
                     update();
-                  },),
+                  },
+                ),
                 Container(width: 1, color: Colors.black),
                 TimerButton(
-
                   child: Icon(Icons.add),
                   function: () {
                     if (_isPlus2ButtonEnabled) {
                       setState(() {
-                        _cubingManager.getLast().setPlus2(!(_cubingManager
-                            .getLast().isPlus2()));
+                        _cubingManager
+                            .getLast()
+                            .setPlus2(!(_cubingManager.getLast().isPlus2()));
                         update();
                       });
                     }
-                    },),
+                  },
+                ),
                 Container(width: 1, color: Colors.black),
                 TimerButton(
                   child: Icon(Icons.clear),
@@ -168,17 +171,63 @@ class _TimerScreen extends State {
                       _cubingManager.removeResult(_cubingManager.getLast());
                       update();
                     });
-                    },),
+                  },
+                ),
                 Container(width: 1, color: Colors.black),
                 TimerButton(
                   child: Icon(Icons.add_to_photos_rounded),
                   function: () {
-                    showBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return Text("Hello");
-                        });
-                  },),
+                    Scaffold.of(context).showBottomSheet<void>((BuildContext context) {//TODO доделать либо переделать
+                      return Container(
+                          alignment: Alignment.center,
+                          height: 400,
+                          color: Colors.grey[300],
+                          child: Column(
+                            children: [
+                              Text("Select event", style: TextStyle(fontSize: 20)),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  EventCard(
+                                    icon: Icons.accessibility_outlined,
+                                    text: "2x2x2",
+                                    onTap: () {
+                                      setState(() {
+                                        _cubingManager.changeEventTo(Event.EVENT_222);
+                                        update();
+                                        updateScramble();
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  EventCard(
+                                    icon: Icons.add_to_photos,
+                                    text: "3x3x3",
+                                    onTap: () {
+                                      setState(() {
+                                        _cubingManager.changeEventTo(Event.EVENT_333);
+                                        update();
+                                        updateScramble();
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  EventCard(
+                                    icon: Icons.accessible,
+                                    text: "Pyraminx",
+                                    onTap: () {
+                                      print("pyraminx");
+                                    },
+                                  ),
+                                ],
+                              )
+                            ],
+                          ));
+                    });
+                  },
+                ),
               ],
             ),
           ),
@@ -202,7 +251,9 @@ class _TimerScreen extends State {
                               style: avgsTextStyle,
                             ),
                             Text(
-                              _avg5Value != null ? _avg5Value.toString() : notCountText,
+                              _avg5Value != null
+                                  ? _avg5Value.toString()
+                                  : notCountText,
                               style: avgsTextStyle,
                             ),
                           ],
@@ -214,7 +265,9 @@ class _TimerScreen extends State {
                               style: avgsTextStyle,
                             ),
                             Text(
-                              _avg12Value != null ? _avg12Value.toString() : notCountText,
+                              _avg12Value != null
+                                  ? _avg12Value.toString()
+                                  : notCountText,
                               style: avgsTextStyle,
                             ),
                           ],
@@ -226,7 +279,9 @@ class _TimerScreen extends State {
                               style: avgsTextStyle,
                             ),
                             Text(
-                              _avg50Value != null ? _avg50Value.toString() : notCountText,
+                              _avg50Value != null
+                                  ? _avg50Value.toString()
+                                  : notCountText,
                               style: avgsTextStyle,
                             ),
                           ],
@@ -238,7 +293,9 @@ class _TimerScreen extends State {
                               style: avgsTextStyle,
                             ),
                             Text(
-                              _avg100Value != null ? _avg100Value.toString() : notCountText,
+                              _avg100Value != null
+                                  ? _avg100Value.toString()
+                                  : notCountText,
                               style: avgsTextStyle,
                             ),
                           ],

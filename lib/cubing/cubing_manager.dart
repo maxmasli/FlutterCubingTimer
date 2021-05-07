@@ -163,7 +163,30 @@ class CubingManager {
 
   //TODO сделать этот прикол
   String _get222RandomScramble () {
-    return null;
+    var scr = [];
+    var temp = -1;
+    String res = "";
+
+    var lit = [["R", "R'", "R2"],
+      ["F", "F'", "F2"],
+      ["U", "U'", "U2"]];
+
+    while (true) {
+      int i = _rnd.nextInt(3);
+      int j = _rnd.nextInt(3);
+      if (temp == i) {
+        continue;
+      } else {
+        temp = i;
+        scr.add(lit[i][j]);
+        res += "${lit[i][j]} ";
+      }
+      if (scr.length > 9) {
+        break;
+      }
+    }
+
+    return res;
   }
 
 }

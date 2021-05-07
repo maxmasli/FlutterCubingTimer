@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubing_timer/screens/results_screen.dart';
 import 'package:flutter_cubing_timer/screens/settings_screen.dart';
 import 'package:flutter_cubing_timer/screens/timer_screen.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(CubingTimer());
@@ -13,6 +14,12 @@ class CubingTimer extends StatefulWidget{
 }
 
 class _CubingTimer extends State{
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  }
 
   void _onItemTaped(index) {
     setState(() {
@@ -43,6 +50,7 @@ class _CubingTimer extends State{
             BottomNavigationBarItem(icon: Icon(Icons.timer), label: "Timer"),
             BottomNavigationBarItem(icon: Icon(Icons.toc), label: "Results"),
           ],
+
           currentIndex: _currentPage,
           onTap: (inValue) => _onItemTaped(inValue),
         ),
