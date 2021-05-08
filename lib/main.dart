@@ -28,6 +28,7 @@ class _CubingTimer extends State{
   }
 
   var _currentPage = 1;
+
   var _pages = [
     SettingsScreen(),
     TimerScreen(),
@@ -36,6 +37,7 @@ class _CubingTimer extends State{
   
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: "FlutterCubingTimer",
       home: Scaffold(

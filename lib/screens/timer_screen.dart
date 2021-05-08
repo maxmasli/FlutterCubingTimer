@@ -6,11 +6,14 @@ import 'package:flutter_cubing_timer/cubing/event.dart';
 import 'package:flutter_cubing_timer/utils.dart';
 import 'package:flutter_cubing_timer/cubing/result.dart';
 import 'package:flutter_cubing_timer/widgets/select_event_card.dart';
+import 'package:flutter_cubing_timer/widgets/timer_bottom_sheet.dart';
 import 'package:flutter_cubing_timer/widgets/timer_button.dart';
 
 class TimerScreen extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() => _TimerScreen(getCB());
+
 }
 
 class _TimerScreen extends State {
@@ -59,9 +62,8 @@ class _TimerScreen extends State {
     } else if (time.isDNF()) {
       _currentTimerValue = DNFText;
     } else {
-      _currentTimerValue = time.getTime().toString();
+      _currentTimerValue = toNormalTime(time.getTime());
     }
-    //TODO переводить в минуты секунды
     var avg = _cubingManager.getAvg(Avg.avg5);
     _avg5Value = avg != -1 ? avg : DNFText;
     avg = _cubingManager.getAvg(Avg.avg12);
@@ -177,54 +179,42 @@ class _TimerScreen extends State {
                 TimerButton(
                   child: Icon(Icons.add_to_photos_rounded),
                   function: () {
-                    Scaffold.of(context).showBottomSheet<void>((BuildContext context) {//TODO доделать либо переделать
-                      return Container(
-                          alignment: Alignment.center,
-                          height: 400,
-                          color: Colors.grey[300],
-                          child: Column(
-                            children: [
-                              Text("Select event", style: TextStyle(fontSize: 20)),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  EventCard(
-                                    icon: Icons.accessibility_outlined,
-                                    text: "2x2x2",
-                                    onTap: () {
-                                      setState(() {
-                                        _cubingManager.changeEventTo(Event.EVENT_222);
-                                        update();
-                                        updateScramble();
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  EventCard(
-                                    icon: Icons.add_to_photos,
-                                    text: "3x3x3",
-                                    onTap: () {
-                                      setState(() {
-                                        _cubingManager.changeEventTo(Event.EVENT_333);
-                                        update();
-                                        updateScramble();
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  EventCard(
-                                    icon: Icons.accessible,
-                                    text: "Pyraminx",
-                                    onTap: () {
-                                      print("pyraminx");
-                                    },
-                                  ),
-                                ],
-                              )
-                            ],
-                          ));
+                    Scaffold.of(context).showBottomSheet<void>((BuildContext context) {
+                      return TimerBottomSheet(
+                        children: [
+                          EventCard(
+                            icon: Icons.accessibility_outlined,
+                            text: "2x2x2",
+                            onTap: () {
+                              setState(() {
+                                _cubingManager.changeEventTo(Event.EVENT_222);
+                                update();
+                                updateScramble();
+                              });
+                              Navigator.pop(context);
+                            },
+                          ),
+                          EventCard(
+                            icon: Icons.add_to_photos,
+                            text: "3x3x3",
+                            onTap: () {
+                              setState(() {
+                                _cubingManager.changeEventTo(Event.EVENT_333);
+                                update();
+                                updateScramble();
+                              });
+                              Navigator.pop(context);
+                            },
+                          ),
+                          EventCard(
+                            icon: Icons.accessible,
+                            text: "Pyraminx",
+                            onTap: () {
+                              print("pyraminx");
+                            },
+                          ),
+                        ],
+                      );
                     });
                   },
                 ),
@@ -252,7 +242,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg5Value != null
-                                  ? _avg5Value.toString()
+                                  ? toNormalTime(_avg5Value)
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
@@ -266,7 +256,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg12Value != null
-                                  ? _avg12Value.toString()
+                                  ? toNormalTime(_avg12Value)
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
@@ -280,7 +270,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg50Value != null
-                                  ? _avg50Value.toString()
+                                  ? toNormalTime(_avg50Value)
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
@@ -294,7 +284,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg100Value != null
-                                  ? _avg100Value.toString()
+                                  ? toNormalTime(_avg100Value)
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
