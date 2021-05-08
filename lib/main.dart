@@ -27,7 +27,7 @@ class _CubingTimer extends State{
     });
   }
 
-  var _currentPage = 1;
+  var _currentPage = 2;
 
   var _pages = [
     SettingsScreen(),

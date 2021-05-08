@@ -8,6 +8,7 @@ CubingManager getCB () {
 }
 
 String toNormalTime(double time){
+  if (time == -1) return null;
   var hours = time ~/ 3600;
   time = ((time-hours*3600)*1000).roundToDouble()/1000;
   var minutes = time ~/ 60;

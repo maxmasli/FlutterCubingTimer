@@ -6,7 +6,7 @@ class Result {
 
   Result(time, scramble, {dnf = false, plus2 = false}) {
     _time = time;
-    _scramble = _scramble;
+    _scramble = scramble;
     _dnf = dnf;
     _plus2 = plus2;
   }

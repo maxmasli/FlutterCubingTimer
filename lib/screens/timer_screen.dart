@@ -64,14 +64,25 @@ class _TimerScreen extends State {
     } else {
       _currentTimerValue = toNormalTime(time.getTime());
     }
-    var avg = _cubingManager.getAvg(Avg.avg5);
-    _avg5Value = avg != -1 ? avg : DNFText;
-    avg = _cubingManager.getAvg(Avg.avg12);
-    _avg12Value = avg != -1 ? avg : DNFText;
-    avg = _cubingManager.getAvg(Avg.avg50);
-    _avg50Value = avg != -1 ? avg : DNFText;
-    avg = _cubingManager.getAvg(Avg.avg100);
-    _avg100Value = avg != -1 ? avg : DNFText;
+    _avg5Value = _cubingManager.getAvg(Avg.avg5);
+    if (_avg5Value == null) _avg5Value = notCountText;
+    else if (_avg5Value == -1) _avg5Value = DNFText;
+    else _avg5Value = toNormalTime(_avg5Value);
+
+    _avg12Value = _cubingManager.getAvg(Avg.avg12);
+    if (_avg12Value == null) _avg12Value = notCountText;
+    else if (_avg12Value == -1) _avg12Value = DNFText;
+    else _avg12Value = toNormalTime(_avg12Value);
+
+    _avg50Value = _cubingManager.getAvg(Avg.avg50);
+    if (_avg50Value == null) _avg50Value = notCountText;
+    else if (_avg50Value == -1) _avg50Value = DNFText;
+    else _avg50Value = toNormalTime(_avg50Value);
+
+    _avg100Value = _cubingManager.getAvg(Avg.avg100);
+    if (_avg100Value == null) _avg100Value = notCountText;
+    else if (_avg100Value == -1) _avg100Value = DNFText;
+    else _avg100Value = toNormalTime(_avg100Value);
   }
 
   void onTapDown(details) {
@@ -242,7 +253,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg5Value != null
-                                  ? toNormalTime(_avg5Value)
+                                  ? _avg5Value
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
@@ -256,7 +267,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg12Value != null
-                                  ? toNormalTime(_avg12Value)
+                                  ? _avg12Value
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
@@ -270,7 +281,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg50Value != null
-                                  ? toNormalTime(_avg50Value)
+                                  ? _avg50Value
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
@@ -284,7 +295,7 @@ class _TimerScreen extends State {
                             ),
                             Text(
                               _avg100Value != null
-                                  ? toNormalTime(_avg100Value)
+                                  ? _avg100Value
                                   : notCountText,
                               style: avgsTextStyle,
                             ),
